@@ -38,6 +38,7 @@ class ParticleFilter {
 	// Vector of weights of all particles
 	std::vector<double> weights;
 
+    /// Transform x and y into the frame given by tX, tY and theta
     void transform(double &x, double &y, double tX, double tY, double theta);
 
     void print(std::string where);
@@ -75,23 +76,15 @@ public:
 	 * @param yaw_rate Yaw rate of car from t to t+1 [rad/s]
 	 */
 	void prediction(double delta_t, double std_pos[], double velocity, double yaw_rate);
-	
-	/**
-	 * dataAssociation Finds which observations correspond to which landmarks (likely by using
-	 *   a nearest-neighbors data association).
-	 * @param predicted Vector of predicted landmark observations
-	 * @param observations Vector of landmark observations
-	 */
-	void dataAssociation(std::vector<LandmarkObs> &predicted, const std::vector<LandmarkObs>& observations);
-	
-	/**
-	 * updateWeights Updates the weights for each particle based on the likelihood of the 
-	 *   observed measurements. 
-	 * @param sensor_range Range [m] of sensor
-	 * @param std_landmark[] Array of dimension 2 [Landmark measurement uncertainty [x [m], y [m]]]
-	 * @param observations Vector of landmark observations
-	 * @param map Map class containing map landmarks
-	 */
+
+    /**
+     * updateWeights Updates the weights for each particle based on the likelihood of the
+     *   observed measurements.
+     * @param sensor_range Range [m] of sensor
+     * @param std_landmark[] Array of dimension 2 [Landmark measurement uncertainty [x [m], y [m]]]
+     * @param observations Vector of landmark observations
+     * @param map Map class containing map landmarks
+     */
 	void updateWeights(double sensor_range, double std_landmark[], const std::vector<LandmarkObs> &observations,
 			const Map &map_landmarks);
 	
@@ -120,7 +113,6 @@ public:
 
     double mvg(double x, double y, double mx, double my, double sx, double sy);
 
-    double normalize_angle(double d);
 };
 
 
