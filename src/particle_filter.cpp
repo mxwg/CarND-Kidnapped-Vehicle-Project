@@ -76,7 +76,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
         particles[i].id = i;
 //        std::cout << "rand: " << particles[i].x << ", " << particles[i].y << ", " << particles[i].theta << "\n";
     }
-    usleep(1000*1000);
+//    usleep(1000*1000);
 
     // particles[i].x +=  velocity * delta_t * cos(theta);
 //    particles[i].y +=  velocity  * delta_t * sin(theta);
@@ -241,8 +241,10 @@ string ParticleFilter::getSenseY(Particle best) {
 void ParticleFilter::transform(double &x, double &y, double tX, double tY, double theta) {
     double st = sin(theta);
     double ct = cos(theta);
-    x = x * ct - y * st + tX;
-    y = x * st + y * ct + tY;
+    double new_x = x * ct - y * st + tX;
+    double new_y = x * st + y * ct + tY;
+    x = new_x;
+    y = new_y;
 }
 
 double ParticleFilter::mvg(double x, double y, double mx, double my, double sx, double sy) {
