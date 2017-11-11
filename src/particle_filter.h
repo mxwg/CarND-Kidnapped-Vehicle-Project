@@ -37,6 +37,10 @@ class ParticleFilter {
 	
 	// Vector of weights of all particles
 	std::vector<double> weights;
+
+    void transform(double &x, double &y, double tX, double tY, double theta);
+
+    void print(std::string where);
 	
 public:
 	
@@ -45,7 +49,7 @@ public:
 
 	// Constructor
 	// @param num_particles Number of particles
-	ParticleFilter() : num_particles(0), is_initialized(false) {}
+	ParticleFilter() : num_particles(10), is_initialized(false) {}
 
 	// Destructor
 	~ParticleFilter() {}
@@ -78,7 +82,7 @@ public:
 	 * @param predicted Vector of predicted landmark observations
 	 * @param observations Vector of landmark observations
 	 */
-	void dataAssociation(std::vector<LandmarkObs> predicted, std::vector<LandmarkObs>& observations);
+	void dataAssociation(std::vector<LandmarkObs> &predicted, const std::vector<LandmarkObs>& observations);
 	
 	/**
 	 * updateWeights Updates the weights for each particle based on the likelihood of the 
@@ -113,6 +117,10 @@ public:
 	const bool initialized() const {
 		return is_initialized;
 	}
+
+    double mvg(double x, double y, double mx, double my, double sx, double sy);
+
+    double normalize_angle(double d);
 };
 
 
