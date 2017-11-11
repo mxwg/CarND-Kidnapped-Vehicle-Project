@@ -8,11 +8,7 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
-#include <numeric>
-#include <math.h>
-#include <iostream>
 #include <sstream>
-#include <string>
 #include <iterator>
 
 #include "particle_filter.h"
@@ -167,25 +163,6 @@ void ParticleFilter::resample() {
     this->particles = newParticles;
 }
 
-Particle ParticleFilter::SetAssociations(Particle particle, std::vector<int> associations, std::vector<double> sense_x,
-                                         std::vector<double> sense_y) {
-    //particle: the particle to assign each listed association, and association's (x,y) world coordinates mapping to
-    // associations: The landmark id that goes along with each listed association
-    // sense_x: the associations x mapping already converted to world coordinates
-    // sense_y: the associations y mapping already converted to world coordinates
-
-    //Clear the previous associations
-    particle.associations.clear();
-    particle.sense_x.clear();
-    particle.sense_y.clear();
-
-    particle.associations = associations;
-    particle.sense_x = sense_x;
-    particle.sense_y = sense_y;
-
-    return particle;
-}
-
 string ParticleFilter::getAssociations(Particle best) {
     vector<int> v = best.associations;
     stringstream ss;
@@ -231,14 +208,3 @@ double ParticleFilter::mvg(double x, double y, double mx, double my, double sx, 
     return factor * exp(exponent);
 }
 
-void ParticleFilter::print(std::string where) {
-    std::cout << "STATE: " << where << " ###########################\n";
-    for(size_t i = 0; i < num_particles; ++i)
-    {
-        std::cout << particles[i].id << ": "
-                                     << particles[i].x << ", "
-                  << particles[i].y << " w(p)=" << particles[i].weight << ", w=" << weights[i]
-                  << "\n";
-    }
-    std::cout << std::endl;
-}
