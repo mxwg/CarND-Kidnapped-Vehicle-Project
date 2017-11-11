@@ -53,8 +53,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
     //  http://www.cplusplus.com/reference/random/default_random_engine/
     default_random_engine gen;
 
-    for(size_t i = 0; i < num_particles; ++i)
-    {
+    for (size_t i = 0; i < num_particles; ++i) {
         double x = particles[i].x;
         double y = particles[i].y;
         double theta = particles[i].theta;
@@ -65,7 +64,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
             new_x = x + (velocity / yaw_rate) * (sin(theta + yaw_rate * delta_t) - sin(theta));
             new_y = y + (velocity / yaw_rate) * (cos(theta) - cos(theta + yaw_rate * delta_t));
             new_theta = (theta + yaw_rate * delta_t);
-        } else{
+        } else {
             new_x = x + velocity * delta_t * cos(theta);
             new_y = y + velocity * delta_t * sin(theta);
             new_theta = theta;
@@ -113,15 +112,12 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
             double lmx = 0;
             double lmy = 0;
             double nearest = 1e10;
-            for (auto landmark: map_landmarks.landmark_list)
-            {
+            for (auto landmark: map_landmarks.landmark_list) {
                 double d = dist(landmark.x_f, landmark.y_f, obs.x, obs.y);
-                if( d > sensor_range)
-                {
+                if (d > sensor_range) {
                     continue;   // ignore measurements out of sensor range
                 }
-                if (d < nearest)
-                {
+                if (d < nearest) {
                     id = landmark.id_i;
                     nearest = d;
                     lmx = landmark.x_f;
@@ -141,8 +137,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
     }
 
     // normalize weights
-    for(size_t i = 0; i < num_particles; ++i)
-    {
+    for (size_t i = 0; i < num_particles; ++i) {
         particles[i].weight /= sum_weights;
         weights[i] /= sum_weights;
     }
@@ -156,8 +151,7 @@ void ParticleFilter::resample() {
     std::discrete_distribution<int> dist(weights.begin(), weights.end());
 
     std::vector<Particle> newParticles;
-    for(size_t i = 0; i < num_particles; ++i)
-    {
+    for (size_t i = 0; i < num_particles; ++i) {
         newParticles.push_back(this->particles[dist(gen)]);
     }
     this->particles = newParticles;
@@ -200,10 +194,10 @@ void ParticleFilter::transform(double &x, double &y, double tX, double tY, doubl
 }
 
 double ParticleFilter::mvg(double x, double y, double mx, double my, double sx, double sy) {
-    double xd = x-mx;
-    double yd = y-my;
+    double xd = x - mx;
+    double yd = y - my;
     double factor = 1.0 / (2 * M_PI * sx * sy);
-    double exponent = - ((xd*xd)/(2*sx*sx) + (yd*yd)/(2*sy*sy) );
+    double exponent = -((xd * xd) / (2 * sx * sx) + (yd * yd) / (2 * sy * sy));
 
     return factor * exp(exponent);
 }
